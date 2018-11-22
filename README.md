@@ -2,12 +2,14 @@
 
 This is a fork from http://jcrawler.sourceforge.net, with some improvements.
 
-This is a load-testing tool, wich is different from usual similar tools mainly for 2 reasons:
+This is a load-testing tool, wich is different from usual similar tools mainly for these reasons:
 - You don't have to define the URL list. It will crawl all links (however you can define inclusion / exclusion patterns)
+- manage cookies
 - The load schema: you only have to define the number of milliseconds between each request
 
 Improvements added to the original tool:
 - URL patterns: allows more complex rules. Cf. conf/crawlerConfig.xml
+- Display HTTP status code
 
 More information on the original JCrawler site.
 

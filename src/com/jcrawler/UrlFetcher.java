@@ -112,12 +112,15 @@ public class UrlFetcher {
 
     // Execute HTTP GET
     int result = 0;
+    int statusCode = 0;
     try {
 
       long startTime = System.currentTimeMillis();
       result = httpclient.executeMethod(httpget);
 
       content = httpget.getResponseBodyAsString();
+      statusCode = httpget.getStatusCode();
+
 
       long endTime = System.currentTimeMillis();
       DashBoard.add( urlString, endTime - startTime );
@@ -136,7 +139,7 @@ public class UrlFetcher {
       synchronized (Crawler.watch) {
         Crawler.fetchedCounter++;
       }
-      log.info("FETCHED " + Crawler.fetchedCounter + "th URL: " + urlString);
+      log.info("FETCHED " + Crawler.fetchedCounter + "th URL: [" + statusCode + "] " + urlString);
 
       //log.debug ( "Response code: " + result );
 
