@@ -37,9 +37,9 @@ public class DashBoard {
    * @param url String
    * @param time int
    */
-  public static void add ( String url, long time ) {
+  public static void add ( String url, long time, int statusCode ) {
 
-    UrlRecord newSlowUrl = new UrlRecord ( url, time);
+    UrlRecord newSlowUrl = new UrlRecord ( url, time, statusCode);
 
     if ( urlList.size() < DashBoard.SIZE ) {
       urlList.add( newSlowUrl );
@@ -68,7 +68,7 @@ public class DashBoard {
           UrlRecord u = (UrlRecord) it.next();
           String url = u.url;
           long time = u.processTime;
-          ret += (" Time: " + time + " URL: " + url + "\n");
+          ret += ("Status: " + u.httpStatusCode + " Time: " + time + " URL: " + url + "\n");
         }
       }
       else {
@@ -82,10 +82,12 @@ public class DashBoard {
 class UrlRecord implements Comparable {
     public String url;
     public long processTime;
+    public int httpStatusCode;
 
-    public  UrlRecord ( String url, long processTime ) {
+    public  UrlRecord ( String url, long processTime, int httpStatusCode ) {
       this.url = url;
       this.processTime = processTime;
+      this.httpStatusCode = httpStatusCode;
     }
 
     public int compareTo(Object o) throws ClassCastException {

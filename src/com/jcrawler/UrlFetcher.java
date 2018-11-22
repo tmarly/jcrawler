@@ -123,7 +123,8 @@ public class UrlFetcher {
 
 
       long endTime = System.currentTimeMillis();
-      DashBoard.add( urlString, endTime - startTime );
+      long deltaTime = endTime - startTime;
+      DashBoard.add( urlString, deltaTime, statusCode );
 
       //log.debug( "Content: " );
       //log.debug( content );
@@ -139,7 +140,7 @@ public class UrlFetcher {
       synchronized (Crawler.watch) {
         Crawler.fetchedCounter++;
       }
-      log.info("FETCHED " + Crawler.fetchedCounter + "th URL: [" + statusCode + "] " + urlString);
+      log.info("FETCHED " + Crawler.fetchedCounter + "th URL: [" + statusCode + "] " + urlString + " in " + deltaTime + " ms");
 
       //log.debug ( "Response code: " + result );
 
