@@ -1,4 +1,4 @@
-# JCrawler
+# JCrawler (load-testing tool)
 
 This is a fork from http://jcrawler.sourceforge.net/
 
