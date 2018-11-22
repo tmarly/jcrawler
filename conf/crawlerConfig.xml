@@ -51,6 +51,8 @@
 	<url-patterns default_permission="false">
 		<!-- If URLs contains '/search' => DENIED -->
 		<pattern permission="false">.*/search/.*</pattern>
+		<!-- Otherwise if PDF file => DENIED (matches also "foo.pdf?v=1") -->
+		<pattern permission="false">.*\.pdf.*</pattern>
 		<!-- Otherwise, if domain is *.yahoo.com => ALLOWED -->
 		<pattern permission="true">https://.*?yahoo\.com.*</pattern>
 		<!-- Otherwise (for all other domains), default permission: DENIED -->
