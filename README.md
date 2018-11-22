@@ -52,5 +52,7 @@ To stop it, just press ENTER
 
 It will produce output to:
 - console
-- file monitor.log
+- file monitor.log (contains speed + slowest URLs)
 - file crawler.log (if the 'file' is enabled in log4j.properties)
+
+@TODO - final report with URLs, timing, and status code, in CSV for example.

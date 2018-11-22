@@ -9,7 +9,8 @@
 	<!--
 	  Interval (in milliseconds) to invoke a monitor thread.
 	  Monitor adds new entry in the monitor.log every <monitorInterval>
-          milliseconds
+          milliseconds.
+      Moreover, every 20 entries, it displays a report with the slowest URLs.
 	-->
 	<monitorInterval>10000</monitorInterval>
 
