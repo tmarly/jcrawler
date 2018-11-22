@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import com.jcrawler.config.ConfigParser;
 import com.jcrawler.Main;
-
+import com.jcrawler.util.PatternFragment;
 /**
  *
  * <p>Crawler settings class </p>
@@ -171,62 +171,39 @@ public class Crawler {
    * @return
    */
   public static boolean crawlOrNot(String url) {
-    boolean flag = false;
 
 //    synchronized (Crawler.watch) {
 
       //-- Has this URL already been processed? Then do not process.
-       if (!Crawler.getUrls().contains(url)) {
-          flag = true;
-        } else {
+       if (Crawler.getUrls().contains(url)) {
           return false;
         }
 
       //-- Is this URL allowed from the configuration XML file settings?
-      boolean matchFlag = false;
-      Set urlPatterns = ConfigParser.getSettings().getUrlPatternsCompiled();
+      Set urlPatterns = ConfigParser.getSettings().getUrlPatternFragments();
       if (urlPatterns != null) {
         Iterator itPatterns = urlPatterns.iterator();
         while (itPatterns.hasNext()) {
-          Pattern pattern = (Pattern) itPatterns.next();
-          Matcher m = pattern.matcher(url);
-          matchFlag = m.matches();
-
-          if (matchFlag) {
-            break;
+          PatternFragment fragment = (PatternFragment) itPatterns.next();
+          Matcher m = fragment.getPatternCompiled().matcher(url);
+          // Match ?
+          if (m.matches()) {
+            // yes !
+            // allow or deny ?
+            boolean permission = fragment.getPermission();
+            log.debug((permission ? "ALLOWED" : "DENIED") + " URL " + url + " by pattern "+fragment.getPattern());
+            return permission;
           }
-
         }
 
       }
 
-      //-- If permissionMode = Denied, crawl all but that URLS
-      if (ConfigParser.getSettings().getCrawlPermission() ==
-          Settings.CRAWL_DENIED) {
-        if (matchFlag) {
-          flag = false;
-          log.debug("DENIED URL " + url);
-        } else {
-          log.debug("NOT DENIED URL " + url);
-          flag = true && flag;
-        }
-      }
+      // no match.
+      // So let's pick the default permission
 
-      //-- If permissionMode = Allowed, crawl only that URLS
-      if (ConfigParser.getSettings().getCrawlPermission() ==
-          Settings.CRAWL_ALLOWED) {
-        if (matchFlag) {
-          flag = true && flag;
-          log.debug("ALLOWED URL " + url);
-        } else {
-          log.debug("NOT ALLOWED URL " + url);
-          flag = false;
-        }
-      }
-
-  //-- enf synch cond  }
-
-    return flag;
+      boolean defaultPermission = ConfigParser.getSettings().getCrawlDefaultPermission();
+      log.debug((defaultPermission ? "ALLOWED" : "DENIED") + " URL " + url + " (no pattern matched, so applying default permission)");
+      return defaultPermission;
   }
 
   /**

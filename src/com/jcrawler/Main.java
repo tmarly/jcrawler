@@ -25,6 +25,7 @@ import com.jcrawler.scheduler.MainSchedulerThread;
 import com.jcrawler.scheduler.MonitorThread;
 import com.jcrawler.util.Crawler;
 import com.jcrawler.util.Settings;
+import com.jcrawler.util.PatternFragment;
 
 public class Main {
 
@@ -37,9 +38,6 @@ public class Main {
     log.info("CONFIGURATION LOADED.");
 
     testConfigparser();
-    System.out.println ( "Permission setting: " + ConfigParser.getSettings().getCrawlPermission());
-
-    //ConfigParser.getSettings().setCrawlPermission( true );
 
     boolean isAnythingToCrawl = loadInitialUrls();
 
@@ -129,10 +127,17 @@ public class Main {
     log.info("------- Crawl URLS ------- ");
     log.info( printSet(ConfigParser.getSettings().getCrawlUrls()) );
     log.info("-------------------------- ");
-    log.info("Pattern Permission: " +
-             ConfigParser.getSettings().getCrawlPermission());
-    log.info("------- URL Patterns ------- ");
-    log.info( printSet(ConfigParser.getSettings().getUrlPatterns()) );
+    log.info("Pattern Permission: ");
+    Iterator i = ConfigParser.getSettings().getUrlPatternFragments().iterator();
+    String nextPrefix = "     ";
+    while (i.hasNext()) {
+        PatternFragment fragment = (PatternFragment) i.next();
+        String verb = fragment.getPermission() ? "Allow " : "Deny ";
+        log.info(nextPrefix + verb + fragment.getPattern());
+        nextPrefix = "ELSE ";
+    }    
+    String verb = ConfigParser.getSettings().getCrawlDefaultPermission() ? "Allow " : "Deny ";
+    log.info(nextPrefix + verb + "ALL");
     log.info("-------------------------- ");
     log.info("===== END CRAWLER CONFIGURATION =====");
 

@@ -30,31 +30,29 @@ public class Settings {
   private Map headers;
   private Set crawlUrls;
 
-  private boolean crawlPermission;
-  private Set urlPatterns;
-  private Set urlPatternsCompiled;
+  private boolean crawlDefaultPermission;
+  private Set urlPatternFragments;
 
   public Settings() {
 
-    // crawlPermission = Settings.CRAWL_DENIED;
+    // crawlDefaultPermission = Settings.CRAWL_DENIED;
 
     this.headers = new HashMap();
-    this.urlPatterns = new HashSet();
-    this.urlPatternsCompiled = Collections.synchronizedSet( new HashSet());
+    this.urlPatternFragments = new HashSet();
     this.crawlUrls = new HashSet();
 
   }
 
-  public boolean getCrawlPermission() {
-    return crawlPermission;
+  public boolean getCrawlDefaultPermission() {
+    return crawlDefaultPermission;
   }
 
   /**
    * This method exists solely for unit-testing purposes.
    * @param permission boolean
    */
-  public void setCrawlPermission( boolean permission ) {
-    crawlPermission = permission;
+  public void setCrawlDefaultPermission( boolean permission ) {
+    crawlDefaultPermission = permission;
   }
 
 
@@ -66,8 +64,8 @@ public class Settings {
     this.headers.put(entry.getKey(), entry.getValue());
   }
 
-  public void addUrlPattern(ParamMapEntry pattern) {
-    this.urlPatterns.add(pattern.getKey());
+  public void addUrlPatternFragment(PatternFragment pattern) {
+    this.urlPatternFragments.add(pattern);
   }
 
   public int getConnectionTimeout() {
@@ -90,12 +88,8 @@ public class Settings {
     return monitorInterval;
   }
 
-  public Set getUrlPatterns() {
-    return urlPatterns;
-  }
-
-  public Set getUrlPatternsCompiled() {
-    return urlPatternsCompiled;
+  public Set getUrlPatternFragments() {
+    return urlPatternFragments;
   }
 
   public void setConnectionTimeout(int connectionTimeout) {
@@ -118,7 +112,7 @@ public class Settings {
     this.monitorInterval = interval;
   }
 
-  public void setUrlPatterns(Set urlPatterns) {
-    this.urlPatterns = urlPatterns;
+  public void setUrlPatternFragments(Set urlPatternFragments) {
+    this.urlPatternFragments = urlPatternFragments;
   }
 }

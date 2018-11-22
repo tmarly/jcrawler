@@ -22,6 +22,7 @@ import com.jcrawler.util.ParamMapEntry;
 import java.util.regex.Pattern;
 import java.util.Iterator;
 import java.util.Set;
+import com.jcrawler.util.PatternFragment;
 
 public class ConfigParser {
   private static Logger log = Logger.getLogger(ConfigParser.class);
@@ -34,28 +35,12 @@ public class ConfigParser {
   static {
     try {
       settings = parseConfiguration();
-      //-- Compile regexpes to improve performance.
-      compileUrlPatterns();
     }
     catch (IOException ex) {
       ex.printStackTrace();
     }
     catch (SAXException ex) {
       ex.printStackTrace();
-    }
-
-  }
-
-  private static void compileUrlPatterns() {
-    //-- Compile regexpes to improve performance.
-    Set urlPatterns = ConfigParser.getSettings().getUrlPatterns();
-    Iterator itPatterns = urlPatterns.iterator();
-    final int flags = Pattern.CASE_INSENSITIVE | Pattern.DOTALL |
-        Pattern.MULTILINE | Pattern.UNICODE_CASE | Pattern.CANON_EQ;
-    while (itPatterns.hasNext()) {
-      String currRegexp = (String) itPatterns.next();
-      Pattern pattern = Pattern.compile(currRegexp, flags);
-      ConfigParser.getSettings().getUrlPatternsCompiled().add( pattern );
     }
 
   }
@@ -85,17 +70,17 @@ public class ConfigParser {
                                    "connectionTimeout");
 
     digester.addSetProperties("settings/url-patterns",
-                              "permission", "crawlPermission");
+                              "default_permission", "crawlDefaultPermission");
 
     digester.addObjectCreate("settings/crawl-urls/url", ParamMapEntry.class);
     digester.addSetNext("settings/crawl-urls/url", "addCrawlUrl");
     digester.addBeanPropertySetter("settings/crawl-urls/url",
                                    "key");
 
-    digester.addObjectCreate("settings/url-patterns/pattern", ParamMapEntry.class);
-    digester.addSetNext("settings/url-patterns/pattern", "addUrlPattern");
-    digester.addBeanPropertySetter("settings/url-patterns/pattern",
-                                   "key");
+    digester.addObjectCreate("settings/url-patterns/pattern", PatternFragment.class);
+    digester.addSetNext("settings/url-patterns/pattern", "addUrlPatternFragment");
+    digester.addSetProperties("settings/url-patterns/pattern","permission","permission");
+    digester.addBeanPropertySetter("settings/url-patterns/pattern", "pattern");
 
     digester.addObjectCreate("settings/headers/header", ParamMapEntry.class);
     digester.addSetNext("settings/headers/header", "addHeader");

@@ -26,8 +26,8 @@ public class DebugSingle {
 
     // Let's initialize setting so that crawlOrNot method does not get
     // in our way.
-    ConfigParser.getSettings().getUrlPatterns().clear();
-    ConfigParser.getSettings().setCrawlPermission(false);
+    ConfigParser.getSettings().getUrlPatternFragments().clear();
+    ConfigParser.getSettings().setCrawlDefaultPermission(true);
 
     //String strURL = "http://uat-demosite.digijava.org:9022/";
     String strURL = "http://amd64-tenders.dgmarket.com/eproc/SearchResult.do~3~~";

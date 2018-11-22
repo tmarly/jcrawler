@@ -82,7 +82,7 @@ public class FetcherTask
             synchronized (Crawler.watch) {
               Crawler.rawURLs.put(currUrl);
             }
-            log.debug("Appending URL" + currUrl + " to crawler's task list by parsing " + urlString);
+            log.debug("Appending URL " + currUrl + " to crawler's task list by parsing " + urlString);
           }
         }
         catch (Exception ex) {

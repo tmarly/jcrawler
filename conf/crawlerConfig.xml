@@ -11,7 +11,7 @@
 	  Monitor adds new entry in the monitor.log every <monitorInterval>
           milliseconds
 	-->
-	<monitorInterval>500</monitorInterval>
+	<monitorInterval>10000</monitorInterval>
 
 	<!-- HTTP connection timeout in milliseconds -->
 	<connectionTimeout>30000</connectionTimeout>
@@ -21,26 +21,39 @@
 	<headers>
 		<header name="User-Agent">Mozilla</header>
 		<header name="Cache-Control">no-cache</header>
-		<header name="Accept-Language">en-us</header>
+		<header name="Accept-Language">en-US</header>
 	</headers>
 
 
-	<!-- URLs to start crawling from -->
+	<!-- URLs to start crawling from. You can enter multiple URLs. -->
 	<crawl-urls>
 		<!--
 		<url>http://www.msn.com/</url>
 		-->
-		<url>http://www.yahoo.com/</url>
+		<url>https://yahoo.com</url>
 	</crawl-urls>
 
 
 	<!--
-	  URL patterns (regexps!!!) to allow or deny set of URLs
-	  permission=true  - these patterns are allowed (anything else is denied)
-	  permission=false - these patterns are denied (anything else is allowed)
+	  URL patterns
+	  For each new URL, each pattern will be applied, one by one.
+	  As soon as a pattern matches, the permission defined in the tag will be applied
+	  (true = allow, false = deny), and the analysis stops (the other patterns won't be
+      analyzed).
+	  If no pattern matches, the default permission defined in the <url-pattern> tag
+	  will be applied.
+
+	  Pattern are:
+	  - regular expressions
+	  - case insensitive
+	  - not substrings, so no need to add '^' or '$'.
 	-->
-	<url-patterns permission="true">
-		<pattern>.*?yahoo\.com.*</pattern>
+	<url-patterns default_permission="false">
+		<!-- If URLs contains '/search' => DENIED -->
+		<pattern permission="false">.*/search/.*</pattern>
+		<!-- Otherwise, if domain is *.yahoo.com => ALLOWED -->
+		<pattern permission="true">https://.*?yahoo\.com.*</pattern>
+		<!-- Otherwise (for all other domains), default permission: DENIED -->
 	</url-patterns>
 
 </settings>
