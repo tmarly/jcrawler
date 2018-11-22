@@ -10,6 +10,11 @@ More information on the original JCrawler site.
 
 ## Installation
 
+```bash
+git clone git@github.com:tmarly/jcrawler.git
+cd jcrawler
+```
+
 You need Java >= 1.5 + Ant, or you can use Docker to build the project.
 
 **With Java + Ant**
