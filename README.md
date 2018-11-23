@@ -41,11 +41,25 @@ Edit dist/conf/crawlerConfig.xml to customize settings for your need.
 
 You can adjust logging settings in dist/log4j.properties
 
-Then run the crawler:
+**Execution**
+
+Make the script executable:
+
 ```bash
 cd dist
 chmod +x run.sh
-./run.sh
+```
+
+Then, if you have Java installed:
+
+```bash
+./run.sj
+```
+
+Or with Docker:
+
+```bash
+docker run --rm -it -v $PWD:/root frekele/ant /root/run.sh
 ```
 
 To stop it, just press ENTER
