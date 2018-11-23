@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import com.jcrawler.UrlFetchException;
 import com.jcrawler.UrlFetcher;
 import com.jcrawler.util.Crawler;
+import com.jcrawler.util.UrlAndReferer;
 
 public class FetcherTask
     extends Thread {
@@ -35,7 +36,8 @@ public class FetcherTask
     // If there is anything to process, do process
     if (Crawler.rawURLs.length() > 0) {
 
-      String urlString = (String) Crawler.rawURLs.get();
+      UrlAndReferer urlAndReferer = (UrlAndReferer) Crawler.rawURLs.get();
+      String urlString = urlAndReferer.url; 
 
       if (urlString == null) {
         log.warn("URL is null");
@@ -47,7 +49,7 @@ public class FetcherTask
 
       String resultedHTML = null;
       try {
-        resultedHTML = UrlFetcher.fetch(urlString);
+        resultedHTML = UrlFetcher.fetch(urlString, urlAndReferer.referer);
       }
       catch (UrlFetchException ex1) {
         log.warn("Could not fetch URL: " + urlString +  " \n" + ex1.getMessage());
@@ -80,7 +82,7 @@ public class FetcherTask
 
           if (! (processedUrls.contains(currUrl) || currUrl == null)) {
             synchronized (Crawler.watch) {
-              Crawler.rawURLs.put(currUrl);
+              Crawler.rawURLs.put(new UrlAndReferer(currUrl, urlString));
             }
             log.debug("Appending URL " + currUrl + " to crawler's task list by parsing " + urlString);
           }

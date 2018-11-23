@@ -8,7 +8,7 @@ This is a load-testing tool, wich is different from usual similar tools mainly f
 - manage cookies
 - The load schema: you only have to define the number of milliseconds between each request
 
-This tool can also be used as a crawler to check HTTP status codes for each page (cf. report.csv).
+This tool can also be used as a crawler to check HTTP status codes for each page, in order to track errors (404, 500, ...) (cf. report.csv).
 
 Improvements added to the original tool:
 - URL patterns: allows more complex rules. Cf. conf/crawlerConfig.xml

@@ -42,7 +42,7 @@ public class Report {
       try {
           //-- Purge old file 'details' and initialize new.
           Report.out = new BufferedWriter(new FileWriter(Report.FILENAME));
-          Report.out.write("start(ms);end(ms);delta(ms);status;url\n");
+          Report.out.write("start(ms);end(ms);delta(ms);status;url;referer\n");
           Report.out.flush();
     }
     catch (IOException e) {
@@ -57,9 +57,12 @@ public class Report {
    * @param url String
    * @param time int
    */
-  public static void add ( String url, long startTime, long endTime, long deltaTime, int statusCode ) {
+  public static void add ( String url, long startTime, long endTime, long deltaTime, int statusCode, String referer ) {
       try {
-          Report.out.write(startTime + ";" + endTime + ";" + deltaTime + ";" + statusCode + ";" + url + "\n");
+          if (referer == null) {
+            referer = "";
+          }
+          Report.out.write(startTime + ";" + endTime + ";" + deltaTime + ";" + statusCode + ";\"" + url + "\";\"" + referer + "\"\n");
           Report.out.flush();
       } catch (IOException e) {
         Logger.getLogger(MainSchedulerThread.class).error(" Could not write urls log");

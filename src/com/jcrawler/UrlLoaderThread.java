@@ -17,8 +17,12 @@ import java.io.FileReader;
 
 import org.apache.log4j.Logger;
 import com.jcrawler.util.Crawler;
+import com.jcrawler.util.UrlAndReferer;
 import java.util.Set;
 
+/**
+ * Not used, however could be used to load URLs from a file.
+ */
 public class UrlLoaderThread
     extends Thread {
 
@@ -51,7 +55,7 @@ public class UrlLoaderThread
     for (int i = 0; i < urls.length; i++) {
         if (!Crawler.getUrls().contains(urls[i])) {
           synchronized (Crawler.watch) {
-            Crawler.rawURLs.put(urls[i]);
+            Crawler.rawURLs.put(new UrlAndReferer(urls[i], null));
           }
       }
     }

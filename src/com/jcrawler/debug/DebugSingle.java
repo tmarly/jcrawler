@@ -35,7 +35,7 @@ public class DebugSingle {
     //String strURL = "http://uat-login.digijava.org:9022/um~user/login.do?rfr=http%3A%2F%2Fuat-demosite.digijava.org%3A9022%7E%2F&autoLogin=true";
 
     try {
-      String content = UrlFetcher.fetch(strURL);
+      String content = UrlFetcher.fetch(strURL, null);
       log.debug ("CONTENT of URL: " + strURL + " has been fetched." );
       //log.debug ( content );
     }

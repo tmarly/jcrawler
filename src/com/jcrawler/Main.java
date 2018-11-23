@@ -25,6 +25,7 @@ import com.jcrawler.scheduler.MainSchedulerThread;
 import com.jcrawler.scheduler.MonitorThread;
 import com.jcrawler.util.Crawler;
 import com.jcrawler.util.Settings;
+import com.jcrawler.util.UrlAndReferer;
 import com.jcrawler.util.PatternFragment;
 
 public class Main {
@@ -101,7 +102,7 @@ public class Main {
       Iterator it = urls.iterator();
       while (it.hasNext()) {
         String curURL = (String) it.next();
-        Crawler.rawURLs.put(curURL);
+        Crawler.rawURLs.put(new UrlAndReferer(curURL, null));
       }
     }
     else {

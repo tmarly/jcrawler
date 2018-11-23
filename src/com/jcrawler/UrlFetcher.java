@@ -69,7 +69,7 @@ public class UrlFetcher {
    * @return String
    */
 
-  public static String fetch(String urlString) throws UrlFetchException {
+  public static String fetch(String urlString, String referer) throws UrlFetchException {
 
     log.debug("Fetching URL " + urlString);
 
@@ -124,7 +124,7 @@ public class UrlFetcher {
 
       long endTime = System.currentTimeMillis();
       long deltaTime = endTime - startTime;
-      Report.add( urlString, startTime, endTime, deltaTime, statusCode );
+      Report.add( urlString, startTime, endTime, deltaTime, statusCode, referer );
 
       //log.debug( "Content: " );
       //log.debug( content );
@@ -154,7 +154,7 @@ public class UrlFetcher {
 
         if (redirectLocation != null) {
           // Perform Redirect!
-          content = fetch(redirectLocation);
+          content = fetch(redirectLocation, "redirection from " + urlString);
         }
         else {
           // The response is invalid and did not provide the new location for
