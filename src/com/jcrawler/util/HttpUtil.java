@@ -53,14 +53,14 @@ public class HttpUtil {
     link = link.trim();
     String ret = "";
 
-    if (link.startsWith("javascript") || link.startsWith("mailto:")) {
+    if (link.startsWith("javascript") || link.startsWith("mailto:") || link.startsWith("tel:")) {
       ret = ""; //Illegal URL
     }
     else if (link.startsWith("http")) {
       ret = link;
     }
     else if (link.startsWith("www.")) {
-      ret = "http://"+link;
+      ret = "https://"+link;
     }
     else if (link.startsWith("/")) {
       int indx = 0;
@@ -84,6 +84,13 @@ public class HttpUtil {
       ret = domain + baseUrl + slash2 + link;
 
     }
+    // remove anchors. This is not perfect (because the '#' could be something else
+    // than an anchor) but will dot most of the job
+    int posAnchor = ret.indexOf('#');
+    if (posAnchor >= 0) {
+      ret = ret.substring(0, posAnchor);
+    }
+    
     return ret;
   }
 
