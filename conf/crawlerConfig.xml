@@ -3,11 +3,6 @@
 	<!--
 	  Interval (in milliseconds) to invoke a crawl thread.
 	  There is an HTTP hit every <interval> millisecond.
-
-	  Warning: if you set it to a very low value (for ex 10ms), 
-	  the list of URLs to crawl will probably be emptied faster than the
-	  http responses, so it will start again with the initial crawl url.
-	  (however, that's an interesting test to do).
 	-->
 	<interval>250</interval>
 

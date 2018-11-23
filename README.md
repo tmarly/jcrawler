@@ -14,6 +14,7 @@ Improvements added to the original tool:
 - URL patterns: allows more complex rules. Cf. conf/crawlerConfig.xml
 - Display HTTP status code
 - Generate a CSV report with all URLs
+- Bug fixes
 
 More information on the original JCrawler site.
 
@@ -73,4 +74,3 @@ It will produce output to:
 - file monitor.log (contains speed)
 - file report.csv (contains URLs list with status code and timing)
 - file crawler.log (if the 'file' is enabled in log4j.properties)
-

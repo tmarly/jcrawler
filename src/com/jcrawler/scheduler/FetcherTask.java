@@ -34,17 +34,35 @@ public class FetcherTask
     Crawler.numOfActiveThreads++;
 
     // If there is anything to process, do process
-    if (Crawler.rawURLs.length() > 0) {
+    UrlAndReferer urlAndReferer = null;
+    String urlString = null;
+    boolean nextUrlFound = false;
+    while(nextUrlFound == false) {
 
-      UrlAndReferer urlAndReferer = (UrlAndReferer) Crawler.rawURLs.get();
-      String urlString = urlAndReferer.url; 
+        // no more element ?
+        if (Crawler.rawURLs.length() == 0) {
+            // then exit
+            break;
+        }
 
-      if (urlString == null) {
-        log.warn("URL is null");
-        Crawler.numOfActiveThreads--;
-        return;
-      }
+        urlAndReferer = (UrlAndReferer) Crawler.rawURLs.get();
+        urlString = urlAndReferer.url; 
 
+        // manage specific case
+        if (urlString == null) {
+          continue;
+        }
+
+        // by the time we reach this point, may be this URL has already been fetched.
+        if (Crawler.getUrls().contains(urlString)) {
+          continue;
+        }
+
+        // if we're here, then all is ok.
+        nextUrlFound = true;
+    }
+
+    if (nextUrlFound == true) {
       log.debug("Begin processing URL: " + urlString);
 
       String resultedHTML = null;
@@ -84,7 +102,6 @@ public class FetcherTask
             synchronized (Crawler.watch) {
               Crawler.rawURLs.put(new UrlAndReferer(currUrl, urlString));
             }
-            log.debug("Appending URL " + currUrl + " to crawler's task list by parsing " + urlString);
           }
         }
         catch (Exception ex) {
@@ -94,6 +111,7 @@ public class FetcherTask
           return;
         }
       }
+
 
     } else {
       log.debug("No URLs left in crawler");
