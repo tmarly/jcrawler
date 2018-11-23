@@ -44,19 +44,10 @@ public class UrlFetcher {
   private static final int AVERAGE_NUM_OF_LINKS = 100;
   private static Pattern pattern;
   public static MultiThreadedHttpConnectionManager connectionManager;
-
-  static {
-    final int flags = Pattern.CASE_INSENSITIVE | Pattern.DOTALL |
+  public static final int flags = Pattern.CASE_INSENSITIVE | Pattern.DOTALL |
         Pattern.MULTILINE | Pattern.UNICODE_CASE | Pattern.CANON_EQ;
 
-    // Match groups 1 and 3 are just for debugging, we are only interested in group 2nd.
-    //String regexp = "<a.*?\\shref\\s*=\\s*([\\\"\\']*)(.*?)([\\\"\\'\\s]).*?>";
-    String regexp =
-        "<a.*?\\shref\\s*=\\s*([\\\"\\']*)(.*?)([\\\"\\'\\s].*?>|>)";
-
-    log.debug("Regular Expression to catch all anchors: " + regexp);
-    UrlFetcher.pattern = Pattern.compile(regexp, flags);
-
+  static {
     //-- Reusable conneciton manager.
     connectionManager = new MultiThreadedHttpConnectionManager();
   }
@@ -72,6 +63,28 @@ public class UrlFetcher {
   public static String fetch(String urlString, String referer) throws UrlFetchException {
 
     log.debug("Fetching URL " + urlString);
+
+    // Init the regexp pattern
+    if (UrlFetcher.pattern == null) {
+        String tags;
+        String attr;
+        if ("true".equals(ConfigParser.getSettings().getOption("assets"))) {
+            tags = "(a|img|script|link)";
+            attr = "(src|href)";
+        } else {
+            tags = "(a)";
+            attr = "(href)";
+        }
+        // Match groups:
+        // 1: tag (a, img, ...)
+        // 2: attribute (href, src)
+        // Match groups 3 and 5 are just for debugging, we are only interested in group 4.
+        //String regexp = "<a.*?\\shref\\s*=\\s*([\\\"\\']*)(.*?)([\\\"\\'\\s]).*?>";
+        String regexp = "<" + tags + ".*?\\s" + attr + "\\s*=\\s*([\\\"\\']*)(.*?)([\\\"\\'\\s].*?>|>)";
+
+        log.debug("Regular Expression to catch URLs: " + regexp); 
+        UrlFetcher.pattern = Pattern.compile(regexp, UrlFetcher.flags);
+    }
 
     synchronized ( Crawler.getUrls() ) {
       Crawler.getUrls().add( urlString );
@@ -117,10 +130,14 @@ public class UrlFetcher {
 
       long startTime = System.currentTimeMillis();
       result = httpclient.executeMethod(httpget);
-
-      content = httpget.getResponseBodyAsString();
       statusCode = httpget.getStatusCode();
 
+      // we parse the result only if this is HTML
+      String contentType = httpget.getResponseHeader("Content-Type").getValue();
+      boolean isHtml = contentType.indexOf("text/html") >= 0;
+      if (isHtml == true) {
+          content = httpget.getResponseBodyAsString();
+      }
 
       long endTime = System.currentTimeMillis();
       long deltaTime = endTime - startTime;
@@ -141,6 +158,9 @@ public class UrlFetcher {
         Crawler.fetchedCounter++;
       }
       log.info("FETCHED " + Crawler.fetchedCounter + "th URL: [" + statusCode + "] " + urlString + " in " + deltaTime + " ms");
+      if (isHtml == false) {
+        log.debug("Content-Type [" + contentType + "], so not parsed");
+      }
 
       //log.debug ( "Response code: " + result );
 
@@ -198,7 +218,7 @@ public class UrlFetcher {
     // Debug code
     //matcher.find();
     //  for ( int i=0; i<=matcher.groupCount(); i++) {
-    //    log.debug("#"+matcher.group(i)+"#");
+    //    log.info("#"+matcher.group(i)+"#");
     //  }
 
     String domain = null;
@@ -227,9 +247,9 @@ public class UrlFetcher {
 /*      System.out.println("----------");
       System.out.print( domain + "   " );
       System.out.print( baseURI + "   " );
-      System.out.println( matcher.group(2));      */
+      System.out.println( matcher.group(0));      */
 
-      currentUrl = HttpUtil.canonizeURL(domain, baseURI, matcher.group(2));
+      currentUrl = HttpUtil.canonizeURL(domain, baseURI, matcher.group(4));
 
       wrongURL = false;
       try {

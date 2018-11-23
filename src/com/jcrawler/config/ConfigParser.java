@@ -89,6 +89,14 @@ public class ConfigParser {
     digester.addBeanPropertySetter("settings/headers/header",
                                    "value");
 
+    digester.addObjectCreate("settings/options/option", ParamMapEntry.class);
+    digester.addSetNext("settings/options/option", "addOption");
+    digester.addSetProperties("settings/options/option",
+                              "name", "key");
+    digester.addBeanPropertySetter("settings/options/option",
+                                   "value");
+
+
     set = (Settings) digester.parse(configFile);
     return set;
   }

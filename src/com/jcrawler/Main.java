@@ -122,24 +122,23 @@ public class Main {
     log.info("Threads Interval: " + ConfigParser.getSettings().getInterval());
     log.info("Monitor Interval: " +
              ConfigParser.getSettings().getMonitorInterval());
-    log.info("------- HTTP Headers ----- ");
+    log.info("HTTP Headers");
     printMap(ConfigParser.getSettings().getHeaders());
-    log.info("-------------------------- ");
-    log.info("------- Crawl URLS ------- ");
+    log.info("Crawl URLS");
     log.info( printSet(ConfigParser.getSettings().getCrawlUrls()) );
-    log.info("-------------------------- ");
     log.info("Pattern Permission: ");
     Iterator i = ConfigParser.getSettings().getUrlPatternFragments().iterator();
-    String nextPrefix = "     ";
+    String nextPrefix = "        ";
     while (i.hasNext()) {
         PatternFragment fragment = (PatternFragment) i.next();
         String verb = fragment.getPermission() ? "Allow " : "Deny ";
         log.info(nextPrefix + verb + fragment.getPattern());
-        nextPrefix = "ELSE ";
+        nextPrefix = "   ELSE ";
     }    
     String verb = ConfigParser.getSettings().getCrawlDefaultPermission() ? "Allow " : "Deny ";
     log.info(nextPrefix + verb + "ALL");
-    log.info("-------------------------- ");
+    log.info("Options");
+    printMap(ConfigParser.getSettings().getOptions());
     log.info("===== END CRAWLER CONFIGURATION =====");
 
   }

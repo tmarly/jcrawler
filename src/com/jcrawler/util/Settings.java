@@ -28,6 +28,7 @@ public class Settings {
   private int monitorInterval;
   private int connectionTimeout;
   private Map headers;
+  private Map options;
   private Set crawlUrls;
 
   private boolean crawlDefaultPermission;
@@ -38,6 +39,7 @@ public class Settings {
     // crawlDefaultPermission = Settings.CRAWL_DENIED;
 
     this.headers = new HashMap();
+    this.options = new HashMap();
     this.urlPatternFragments = new HashSet();
     this.crawlUrls = new HashSet();
 
@@ -64,6 +66,10 @@ public class Settings {
     this.headers.put(entry.getKey(), entry.getValue());
   }
 
+  public void addOption(ParamMapEntry entry) {
+    this.options.put(entry.getKey(), entry.getValue());
+  }
+
   public void addUrlPatternFragment(PatternFragment pattern) {
     this.urlPatternFragments.add(pattern);
   }
@@ -78,6 +84,14 @@ public class Settings {
 
   public Map getHeaders() {
     return headers;
+  }
+
+  public Map getOptions() {
+    return options;
+  }
+
+  public String getOption(String name) {
+    return (String) options.get(name);
   }
 
   public int getInterval() {
@@ -102,6 +116,10 @@ public class Settings {
 
   public void setHeaders(Map headers) {
     this.headers = headers;
+  }
+
+  public void setOptions(Map options) {
+    this.options = options;
   }
 
   public void setInterval(int interval) {

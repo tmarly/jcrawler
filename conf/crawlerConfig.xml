@@ -59,4 +59,18 @@
 		<!-- Otherwise (for all other domains), default permission: DENIED -->
 	</url-patterns>
 
+
+	<!--
+		Additional crawl options
+	-->
+	<options>
+		<!-- 
+			true / false. If true, all assets (img, css, js) will be also downloaded.
+			This can be usefull for example to test status code (be sure it's 200) ot
+			to check in the report that there is no mixed content (http loaded from
+			a https page)
+		 -->
+		<option name="assets">false</option>
+	</options>
+
 </settings>
