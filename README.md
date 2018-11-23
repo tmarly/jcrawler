@@ -14,6 +14,7 @@ Improvements added to the original tool:
 - URL patterns: allows more complex rules. Cf. conf/crawlerConfig.xml
 - Display HTTP status code
 - Generate a CSV report with all URLs
+- Optional: crawl also assets (img, js, css, ...)
 - Bug fixes
 
 More information on the original JCrawler site.
