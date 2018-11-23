@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 import com.jcrawler.config.ConfigParser;
 import com.jcrawler.util.Crawler;
 import com.jcrawler.util.HttpUtil;
-import com.jcrawler.util.DashBoard;
+import com.jcrawler.util.Report;
 import java.util.Collections;
 import com.jcrawler.scheduler.MonitorThread;
 
@@ -124,7 +124,7 @@ public class UrlFetcher {
 
       long endTime = System.currentTimeMillis();
       long deltaTime = endTime - startTime;
-      DashBoard.add( urlString, deltaTime, statusCode );
+      Report.add( urlString, startTime, endTime, deltaTime, statusCode );
 
       //log.debug( "Content: " );
       //log.debug( content );

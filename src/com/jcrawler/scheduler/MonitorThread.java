@@ -19,7 +19,7 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import com.jcrawler.util.Crawler;
 import com.jcrawler.Main;
-import com.jcrawler.util.DashBoard;
+import com.jcrawler.util.Report;
 
 public class MonitorThread
     extends Thread {
@@ -74,6 +74,7 @@ public class MonitorThread
       }
 
       this.out.close();
+      Report.close();
 
     }
     catch (IOException ex1) {
@@ -102,13 +103,6 @@ public class MonitorThread
     }
 
     recordsCounter++;
-    if (recordsCounter == 20 ) {
-      display += "\n ------------------ RECORD URLs ---------------------------\n ";
-      display += DashBoard.print();
-      display += "\n ---------------------------------------------------------- ";
-      recordsCounter=0;
-    }
-
     return display + "\n";
   }
 

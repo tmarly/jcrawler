@@ -1,4 +1,5 @@
-# JCrawler (load-testing tool)
+# JCrawler
+**load-testing tool + HTTP status testing tool**
 
 This is a fork from http://jcrawler.sourceforge.net, with some improvements.
 
@@ -7,9 +8,12 @@ This is a load-testing tool, wich is different from usual similar tools mainly f
 - manage cookies
 - The load schema: you only have to define the number of milliseconds between each request
 
+This tool can also be used as a crawler to check HTTP status codes for each page (cf. report.csv).
+
 Improvements added to the original tool:
 - URL patterns: allows more complex rules. Cf. conf/crawlerConfig.xml
 - Display HTTP status code
+- Generate a CSV report with all URLs
 
 More information on the original JCrawler site.
 
@@ -66,7 +70,7 @@ To stop it, just press ENTER
 
 It will produce output to:
 - console
-- file monitor.log (contains speed + slowest URLs)
+- file monitor.log (contains speed)
+- file report.csv (contains URLs list with status code and timing)
 - file crawler.log (if the 'file' is enabled in log4j.properties)
 
-@TODO - final report with URLs, timing, and status code, in CSV for example.
