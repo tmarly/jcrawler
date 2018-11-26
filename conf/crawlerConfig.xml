@@ -3,6 +3,16 @@
 	<!--
 	  Interval (in milliseconds) to invoke a crawl thread.
 	  There is an HTTP hit every <interval> millisecond.
+
+	  Important note: if you set it to a low value, JCrawler may not
+	  be performant enough so the timing / performance displayed by
+	  JCrawler may be wrong. 
+	  In this case, a good solution to get correct timing would be
+	  for example, with Nginx:
+	  - in nginx conf, add_header X-Debug-Time $request_time;
+	  - and in the JCrawler options (cf. at the bottom of this file), add:
+	    <option name="fetch-headers">X-Debug-Time</option>
+      So the real timing would be displayed in report.csv
 	-->
 	<interval>250</interval>
 
