@@ -59,7 +59,7 @@ chmod +x run.sh
 Then, if you have Java installed:
 
 ```bash
-./run.sj
+./run.sh
 ```
 
 Or with Docker:
