@@ -34,7 +34,7 @@ ant build
 **With Docker**
 
 ```bash
-git clone git@github.com:tmarly/jcrawler.git
+git clone https://github.com/tmarly/jcrawler.git
 cd jcrawler
 docker run --rm -v $PWD:/root frekele/ant ant build
 ```
