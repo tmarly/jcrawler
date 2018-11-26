@@ -11,7 +11,7 @@ This is a load-testing tool, wich is different from usual similar tools mainly f
 This tool can also be used as a crawler to check HTTP status codes for each page, in order to track errors (404, 500, ...) (cf. report.csv).
 
 Improvements added to the original tool:
-- URL patterns: allows more complex rules. Cf. conf/crawlerConfig.xml
+- URL patterns: allows more complex rules. Cf. [conf/crawlerConfig.xml](conf/crawlerConfig.xml)
 - Display HTTP status code
 - Generate a CSV report with all URLs
 - Fetch additional HTTP headers (X-Cache-Status, ...)
@@ -76,3 +76,5 @@ It will produce output to:
 - file monitor.log (contains speed)
 - file report.csv (contains URLs list with status code and timing)
 - file crawler.log (if the 'file' is enabled in log4j.properties)
+
+There are some importante notes in [Analyzing-results.md](Analyzing-results.md)
