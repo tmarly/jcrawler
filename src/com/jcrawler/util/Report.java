@@ -19,6 +19,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import org.apache.log4j.Logger;
 import com.jcrawler.scheduler.MainSchedulerThread;
+import org.apache.commons.httpclient.methods.GetMethod;
+import com.jcrawler.config.ConfigParser;
 
 /**
  * One of our goals in load-test-crawling a web-application is to be able to
@@ -37,12 +39,24 @@ public class Report {
 
   public static SortedSet urlList = new TreeSet();
   private static BufferedWriter out;
+  private static String [] httpHeaders;
 
   static {
       try {
+          String strHeaders = ConfigParser.getSettings().getOption("fetch-headers");
+          httpHeaders = strHeaders.split(",");
+
           //-- Purge old file 'details' and initialize new.
           Report.out = new BufferedWriter(new FileWriter(Report.FILENAME));
-          Report.out.write("start(ms);end(ms);delta(ms);status;url;referer\n");
+          Report.out.write("start(ms);end(ms);delta(ms);status;url;referer");
+          for (int i = 0; i < httpHeaders.length; i ++) {
+            String headerToFetch = httpHeaders[i].trim();
+            if (headerToFetch.length() > 0) {
+              Report.out.write(";" + httpHeaders[i]);
+            }
+          }
+          Report.out.write("\n");
+
           Report.out.flush();
     }
     catch (IOException e) {
@@ -57,12 +71,19 @@ public class Report {
    * @param url String
    * @param time int
    */
-  public static void add ( String url, long startTime, long endTime, long deltaTime, int statusCode, String referer ) {
+  public static void add ( String url, long startTime, long endTime, long deltaTime, int statusCode, String referer, GetMethod httpGet ) {
       try {
           if (referer == null) {
             referer = "";
           }
-          Report.out.write(startTime + ";" + endTime + ";" + deltaTime + ";" + statusCode + ";\"" + url + "\";\"" + referer + "\"\n");
+          Report.out.write(startTime + ";" + endTime + ";" + deltaTime + ";" + statusCode + ";\"" + url + "\";\"" + referer + "\"");
+          for (int i = 0; i < httpHeaders.length; i++) {
+            String headerToFetch = httpHeaders[i].trim();
+            if (headerToFetch.length() > 0) {
+                Report.out.write(";" + '"' + httpGet.getResponseHeader(headerToFetch) + '"');
+            }
+          }
+          Report.out.write("\n");
           Report.out.flush();
       } catch (IOException e) {
         Logger.getLogger(MainSchedulerThread.class).error(" Could not write urls log");

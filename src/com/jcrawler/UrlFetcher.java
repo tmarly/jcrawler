@@ -141,7 +141,8 @@ public class UrlFetcher {
 
       long endTime = System.currentTimeMillis();
       long deltaTime = endTime - startTime;
-      Report.add( urlString, startTime, endTime, deltaTime, statusCode, referer );
+
+      Report.add( urlString, startTime, endTime, deltaTime, statusCode, referer, httpget);
 
       //log.debug( "Content: " );
       //log.debug( content );

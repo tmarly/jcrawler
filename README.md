@@ -14,6 +14,7 @@ Improvements added to the original tool:
 - URL patterns: allows more complex rules. Cf. conf/crawlerConfig.xml
 - Display HTTP status code
 - Generate a CSV report with all URLs
+- Fetch additional HTTP headers (X-Cache-Status, ...)
 - Optional: crawl also assets (img, js, css, ...)
 - Bug fixes
 

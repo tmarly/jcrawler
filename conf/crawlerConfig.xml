@@ -71,6 +71,15 @@
 			a https page)
 		 -->
 		<option name="assets">false</option>
+		<!-- 
+			Add in the CSV report additional informations about HTTP headers.
+			It can be usefull for example for Nginx / Varnish to test the
+			cache status.
+			Multiple values must be separated with a comma (',').
+			Example:
+			<option name="fetch-headers">X-Cache-Status,Content-Length</option>
+		 -->
+		<option name="fetch-headers"></option>
 	</options>
 
 </settings>
